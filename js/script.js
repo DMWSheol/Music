@@ -7,7 +7,7 @@ imageUpload.addEventListener("change", function(event){
   reader.onload = async function(e){
     let imageSrc = e.target.result;
     imageCon.src = imageSrc;
-    let colors = getHex(imageCon).filter(innerArray => {
+    let colors = getRGB(imageCon).filter(innerArray => {
       return !innerArray.every(item => item === 0);
     });
     let colorCode = sumColor(colors);
@@ -17,7 +17,7 @@ imageUpload.addEventListener("change", function(event){
 reader.readAsDataURL(file);
 })
 
-function getHex(imgEl){
+function getRGB(imgEl){
   let canvas = document.createElement('canvas'),
       context = canvas.getContext && canvas.getContext('2d'),
       data, width, height;
@@ -67,7 +67,7 @@ function sumDigits(num){
       sum + parseInt(digit), 0);
 }
 
-const notePossibilities = ["G1", "C2", "C#3", "D4", "D#1", "E2", "F3", "F#4", "G2", "G#1", "A3", "A#4", "B#1", "C1", "C#2", "D3", "D#4", "E1", "F2", "F#3"]
+const notePossibilities = ["G1", "C2", "C#3", "D4", "D#5", "E6", "F7", "F#6", "G2", "G#1", "A3", "A#4", "B#5", "C6", "C#7", "D6", "D#1", "E2", "F3", "F#4"]
 function codeToNote(arr){
   let notes = [];
   for(let i = 0; i < arr.length; i++){
@@ -82,7 +82,7 @@ function codeToNote(arr){
 }
 const reverb = new Tone.Reverb({
   decay: 2,
-  preDelay: 0.01,
+  preDelay: 0.07,
 }).toDestination();
 
 async function playNotes(notes){
@@ -95,6 +95,6 @@ async function playNotes(notes){
     instrument.triggerAttackRelease(noteSet, "8n", timeOffset);
     timeOffset += Tone.Time("8n").toSeconds();
   });
-  Tone.Transport.start();
+  Tone.Transport.start("+0.01");
  console.log(notes)
 }
